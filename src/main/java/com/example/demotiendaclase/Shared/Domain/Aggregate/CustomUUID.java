@@ -12,6 +12,10 @@ public class CustomUUID {
         this.value = value;
     }
 
+    public String value(){
+        return this.value;
+    }
+
     private void validate(String value){
         validFormat(value);
     }
