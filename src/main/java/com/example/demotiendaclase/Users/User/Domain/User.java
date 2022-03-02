@@ -11,17 +11,19 @@ public class User {
     private UserBalance userBalance;
     private UserIsSeller isSeller;
     private UserRating userRating;
+    private UserPassword userPassword;
 
-    public User(UserId userId, UserName userName, UserEmail userEmail,UserBalance userBalance, UserIsSeller isSeller, UserRating userRating) {
+    public User(UserId userId, UserName userName, UserEmail userEmail,UserBalance userBalance, UserIsSeller isSeller, UserRating userRating, UserPassword userPassword) {
         this.userId = userId;
         this.userName = userName;
         this.userBalance = userBalance;
         this.userEmail = userEmail;
         this.isSeller = isSeller;
         this.userRating = userRating;
+        this.userPassword = userPassword;
     }
 
-    public static User create(UserId userId, UserName userName, UserEmail userEmail)
+    public static User create(UserId userId, UserName userName, UserEmail userEmail, UserPassword userPassword)
     {
         //Se aplican las reglas de negocio:
         //Cuando se crean usuarios el balance es 0, no es vendedor y su rating es 5 estrellas
@@ -31,8 +33,17 @@ public class User {
                 userEmail,
                 new UserBalance(0d),
                 new UserIsSeller(false),
-                new UserRating(5d));
+                new UserRating(5d),
+                userPassword);
         return user;
+    }
+
+    public void authenticateUser(UserEmail userEmail, UserPassword userPassword)
+    {
+        if(!(this.userPassword.equals(userPassword) && this.userEmail.equals(userEmail)))
+        {
+            throw new RuntimeException("Credenciales inválidas");
+        }
     }
 
     public HashMap<String, Object> data() {
@@ -48,5 +59,5 @@ public class User {
         };
         return data;
     }
-    
+
 }
