@@ -1,8 +1,13 @@
 package com.example.demotiendaclase.Users.User.Domain;
 
+import com.example.demotiendaclase.Users.User.Domain.Entities.UserAddress;
 import com.example.demotiendaclase.Users.User.Domain.ValueObject.*;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
+import java.util.Optional;
+import java.util.stream.Collectors;
 
 public class User {
     private UserId userId;
@@ -13,8 +18,12 @@ public class User {
     private UserRating userRating;
     private UserPassword userPassword;
 
+    private Optional<List<UserAddress>> addressList;
+
     //Cargar un objeto de la base de datos
-    public User(UserId userId, UserName userName, UserEmail userEmail,UserBalance userBalance, UserIsSeller isSeller, UserRating userRating, UserPassword userPassword) {
+    public User(UserId userId, UserName userName, UserEmail userEmail,UserBalance userBalance, UserIsSeller isSeller,
+                UserRating userRating, UserPassword userPassword,
+                Optional<List<UserAddress>> addressList) {
         this.userId = userId;
         this.userName = userName;
         this.userBalance = userBalance;
@@ -22,6 +31,7 @@ public class User {
         this.isSeller = isSeller;
         this.userRating = userRating;
         this.userPassword = userPassword;
+        this.addressList = addressList;
     }
 
     //Crear un objeto y cargarlo a la base de datos
@@ -36,7 +46,8 @@ public class User {
                 new UserBalance(0d),
                 new UserIsSeller(false),
                 new UserRating(5d),
-                userPassword);
+                userPassword,
+                null);
         return user;
     }
 
@@ -57,9 +68,18 @@ public class User {
                 put("isSeller", isSeller.value());
                 put("balance", userBalance.value());
                 put("rating", userRating.value());
+                put("address",createAddress());
             }
         };
         return data;
+    }
+
+    private List<HashMap<String,Object>> createAddress(){
+        List<HashMap<String,Object>> list = new ArrayList<>();
+        if(!addressList.isEmpty()) {
+            list= addressList.get().stream().map(address->address.data()).collect(Collectors.toList());
+        }
+        return list;
     }
 
 }
