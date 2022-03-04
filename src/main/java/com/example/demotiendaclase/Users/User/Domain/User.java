@@ -13,6 +13,7 @@ public class User {
     private UserRating userRating;
     private UserPassword userPassword;
 
+    //Cargar un objeto de la base de datos
     public User(UserId userId, UserName userName, UserEmail userEmail,UserBalance userBalance, UserIsSeller isSeller, UserRating userRating, UserPassword userPassword) {
         this.userId = userId;
         this.userName = userName;
@@ -23,6 +24,7 @@ public class User {
         this.userPassword = userPassword;
     }
 
+    //Crear un objeto y cargarlo a la base de datos
     public static User create(UserId userId, UserName userName, UserEmail userEmail, UserPassword userPassword)
     {
         //Se aplican las reglas de negocio:
